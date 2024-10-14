@@ -1,9 +1,10 @@
 #!/bin/bash
 
-#Arquivos de log do cPanel/WHM
+# Arquivos de log do cPanel/WHM
 LOGIN_LOG="/usr/local/cpanel/logs/login_log"
 ACCESS_LOG="/usr/local/cpanel/logs/access_log"
 SCRIPT_LOG="/var/log/scriptcsf.log"
+CSF_PATH="/usr/sbin/csf"  # Insira o caminho completo do csf
 
 # Verifica se o arquivo de log do script existe, caso contrário cria
 if [ ! -f "$SCRIPT_LOG" ]; then
@@ -16,7 +17,7 @@ fi
 add_to_csf() {
     local ip="$1"
     # Adiciona o IP ao CSF
-    csf -a "$ip" >> "$SCRIPT_LOG" 2>&1
+    $CSF_PATH -a "$ip" >> "$SCRIPT_LOG" 2>&1
     if [ $? -eq 0 ]; then
         echo "$(date '+%Y-%m-%d %H:%M:%S') - Sucesso ao adicionar $ip ao CSF" >> "$SCRIPT_LOG"
     else
